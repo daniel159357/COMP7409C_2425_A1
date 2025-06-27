@@ -31,22 +31,15 @@ class Perceptron():
       errors = 0
       # insert necessary statements below to read in each (example, label) pair and 
       # update the weights using the Perceptron learning rules given in the lecture.
-      # ...
       for xi, yi in zip(X, y):
-        # calculate the net input
         net_input = self.net_input(xi)
-        # calculate the output
         pred = np.where(net_input >= 0.0, 1, -1)
-        # calculate the error
-        error = yi - pred
-        # update the weights
-        self.w[0] += self.eta * error
-        self.w[1:] += self.eta * error * xi
-        errors += error
-        # end of loop
-
-    # insert necessary statements below to append the number of errors found in this round to self.errors here
-    self.errors.append(errors)
+        if yi != pred:  # Only update if prediction is wrong
+          error = yi - pred
+          self.w[0] += self.eta * error
+          self.w[1:] += self.eta * error * xi
+          errors += 1  # Count misclassifications
+      self.errors.append(errors)
     return self
   
   def net_input(self, x):
